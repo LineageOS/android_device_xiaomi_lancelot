@@ -1,6 +1,6 @@
 # MTK project .rc configure
-import /vendor/odm/etc/${ro.boot.product.hardware.sku}/vendor.nxp.hardware.nfc@1.2-service_lancelot.rc
-import /vendor/odm/etc/${ro.boot.product.hardware.sku}/android.hardware.secure_element@1.2-service-mediatek.rc
+import /vendor/odm/etc/${ro.boot.product.hardware.sku}/vendor.microtrust.hardware.se@1.0-service.rc
+
 on init
     mkdir /mnt/media_rw/usbotg 0700 media_rw media_rw
     mkdir /storage/usbotg 0700 root root
@@ -131,3 +131,12 @@ service service_nv_protect /vendor/bin/misc_writer --nv_protect
 on property:vendor.service_nv_protect=start
     start service_nv_protect
 
+service vendor.nfc_hal_service /vendor/bin/hw/android.hardware.nfc@1.2-service
+    class hal
+    user nfc
+    group nfc
+    disabled
+    override
+
+on property:ro.boot.product.hardware.sku=galahad
+    start vendor.nfc_hal_service
