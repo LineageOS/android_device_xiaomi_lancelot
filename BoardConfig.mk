@@ -15,6 +15,12 @@ TARGET_OTA_ASSERT_DEVICE := lancelot,galahad,shiva
 # Display
 TARGET_SCREEN_DENSITY := 440
 
+# HIDL
+ODM_MANIFEST_SKUS += \
+    galahad
+
+ODM_MANIFEST_GALAHAD_FILES := $(DEVICE_PATH)/manifest_galahad.xml
+
 # Kernel
 TARGET_KERNEL_CONFIG := lancelot_defconfig
 
