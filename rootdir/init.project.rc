@@ -1,0 +1,133 @@
+# MTK project .rc configure
+import /vendor/odm/etc/${ro.boot.product.hardware.sku}/vendor.nxp.hardware.nfc@1.2-service_lancelot.rc
+import /vendor/odm/etc/${ro.boot.product.hardware.sku}/android.hardware.secure_element@1.2-service-mediatek.rc
+on init
+    mkdir /mnt/media_rw/usbotg 0700 media_rw media_rw
+    mkdir /storage/usbotg 0700 root root
+
+on post-fs-data
+
+#Camera
+    chmod 0660 /dev/MAINAF
+    chown system camera /dev/MAINAF
+
+    chmod 0660 /dev/MAINAF2
+    chown system camera /dev/MAINAF2
+
+    chmod 0660 /dev/SUBAF
+    chown system camera /dev/SUBAF
+
+    chmod 0660 /dev/GAF001AF
+    chown system camera /dev/GAF001AF
+
+    chmod 0660 /dev/DW9714AF
+    chown system camera /dev/DW9714AF
+
+    chmod 0660 /dev/LC898212AF
+    chown system camera /dev/LC898212AF
+
+    chmod 0660 /dev/BU64745GWZAF
+    chown system camera /dev/BU64745GWZAF
+
+#SMB
+    chown system system /proc/smb/ScreenComm
+    chmod 0660 /proc/smb/ScreenComm
+
+    chmod 0660 /dev/spm
+    chown system system /dev/spm
+#dual calib
+    chmod 0777 /mnt/vendor/persist/camera/rear_dc_cal_wd.bin
+    chmod 0777 /data/vendor/camera/rear_dc_cal_wd.bin
+
+#XIAOMI_AI_ASD
+    mkdir /data/misc/camera 0777 system camera
+    mkdir /data/vendor/camera 0777 system camera
+    copy  /vendor/etc/camera/golden_rear_dc_cal_wd.bin /data/vendor/camera/golden_rear_dc_cal_wd.bin
+    chown system system /data/vendor/camera/golden_rear_dc_cal_wd.bin
+    chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wd.bin
+    chmod 0660 /dev/nq-nci
+    chown nfc nfc /dev/nq-nci
+    chmod 0660 /dev/p73
+    chown nfc nfc /dev/p73
+    mkdir /data/vendor/camera/model 0777 system camera
+    mkdir /data/vendor/camera/model/rt_model 0777 system camera
+    mkdir /data/vendor/camera/model/rt_model/mask 0777 system camera
+    mkdir /data/vendor/camera/model/rt_model/score 0777 system camera
+    mkdir /data/vendor/camera/model/bokeh_model 0777 system camera
+    copy /vendor/etc/camera/model/rt_model/mask/cache_data /data/vendor/camera/model/rt_model/mask/cache_data
+    chmod 0777 /data/vendor/camera/model/rt_model/mask/cache_data
+    copy /vendor/etc/camera/model/rt_model/mask/model_mdl_cache /data/vendor/camera/model/rt_model/mask/model_mdl_cache
+    chmod 0777 /data/vendor/camera/model/rt_model/mask/model_mdl_cache
+    copy /vendor/etc/camera/model/rt_model/mask/segment_model /data/vendor/camera/model/rt_model/mask/segment_model
+    chmod 0777 /data/vendor/camera/model/rt_model/mask/segment_model
+    copy /vendor/etc/camera/model/rt_model/score/cache_data /data/vendor/camera/model/rt_model/score/cache_data
+    chmod 0777 /data/vendor/camera/model/rt_model/score/cache_data
+    copy /vendor/etc/camera/model/rt_model/score/model_mdl_cache /data/vendor/camera/model/rt_model/score/model_mdl_cache
+    chmod 0777 /data/vendor/camera/model/rt_model/score/model_mdl_cache
+    copy /vendor/etc/camera/model/rt_model/score/segment_model /data/vendor/camera/model/rt_model/score/segment_model
+    chmod 0777 /data/vendor/camera/model/rt_model/score/segment_model
+    copy /vendor/etc/camera/model/bokeh_model/cache_data /data/vendor/camera/model/bokeh_model/cache_data
+    chmod 0777 /data/vendor/camera/model/bokeh_model/cache_data
+    copy /vendor/etc/camera/model/bokeh_model/model_mdl_cache /data/vendor/camera/model/bokeh_model/model_mdl_cache
+    chmod 0777 /data/vendor/camera/model/bokeh_model/model_mdl_cache
+    copy /vendor/etc/camera/model/bokeh_model/segment_model /data/vendor/camera/model/bokeh_model/segment_model
+    chmod 0777 /data/vendor/camera/model/bokeh_model/segment_model
+
+#XIAOMI_WATERMARK
+    mkdir /vendor/etc/camera 0777 system camera
+#dual calib
+    mkdir /mnt/vendor/persist/camera 0777 system camera
+    chmod 0777 /mnt/vendor/persist/camera/rear_dc_cal_wt.bin
+    chmod 0777 /mnt/vendor/persist/camera/rear_dc_cal_wd.bin
+    chmod 0777 /vendor/etc/camera/golden_ov13b10_i_ov2180_i.bin
+    chmod 0777 /vendor/etc/camera/golden_ov13b10_i_ov2180_ii.bin
+    chmod 0777 /vendor/etc/camera/golden_ov13b10_ii_ov2180_i.bin
+    chmod 0777 /vendor/etc/camera/golden_ov13b10_ii_ov2180_ii.bin
+    chmod 0777 /data/vendor/camera/golden_rear_dc_cal_wt.bin
+    chmod 0777 /data/vendor/camera/rear_dc_cal_wd.bin
+    chmod 0777 /data/vendor/camera/golden_s5k3l6_ii_ov2180_ii.bin
+
+
+on init
+    # Refer to http://source.android.com/devices/tech/storage/index.html
+    # It said, "Starting in Android 4.4, multiple external storage devices are surfaced to developers through
+    #           Context.getExternalFilesDirs(), Context.getExternalCacheDirs(), and Context.getObbDirs().
+    #           External storage devices surfaced through these APIs must be a semi-permanent part of the device (such as an SD card slot in a battery compartment).
+    #           Developers expect data stored in these locations to be available over long periods of time."
+    # Therefore, if the target doesn't support sd hot-plugging (Ex: the SD card slot in a battery compartment), we need to export SECONDARY_STORAGE in 'boot' section
+    #
+    # export SECONDARY_STORAGE /storage/sdcard1
+
+service fuse_usbotg /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/usbotg /storage/usbotg
+    class late_start
+    disabled
+
+service mmc_ffu /vendor/bin/mmc_ffu do /vendor/bin/KMDD60018M-B320_P09.bin /dev/block/mmcblk0 15 09 02
+	class main
+	user root
+	group system
+	oneshot
+
+service mmc_ffu_hynix /vendor/bin/mmc_ffu_hynix do /vendor/bin/H9HP16AECMMDAR-KMM_P08.bin /dev/block/mmcblk0 90 38303030 35303030
+	class main
+	user root
+	group system
+	oneshot
+
+service mmc_ffu_micron /vendor/bin/mmc_ffu_micron do /vendor/bin/Turquoise_FW_Version_0x0203.BIN /dev/block/mmcblk0 13 00000203 00000001
+	class main
+	user root
+	group system
+	oneshot
+
+on boot
+    setprop vendor.debug.camera.enableMetaPending 0
+    setprop vendor.debug.camera.enableMetaMerge 0
+
+service service_nv_protect /vendor/bin/misc_writer --nv_protect
+    disabled
+    oneshot
+
+on property:vendor.service_nv_protect=start
+    start service_nv_protect
+

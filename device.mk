@@ -11,6 +11,10 @@ $(call inherit-product, device/xiaomi/mt6768-common/mt6768.mk)
 DEVICE_PACKAGE_OVERLAYS += \
     $(DEVICE_PATH)/overlay
 
+# Rootdir
+PRODUCT_PACKAGES += \
+    init.project.rc
+
 # AAPT
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
