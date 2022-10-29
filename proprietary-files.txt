@@ -75,7 +75,7 @@ vendor/lib64/libaltek_ldc_preview.so
 vendor/lib64/libmtkcam.featurepipe.capture.so
 vendor/lib64/libmtkcam.featurepipe.streaming.so
 vendor/lib64/libmtkcam.logicalmodule.so
-vendor/lib64/libmtkcam_3rdparty.customer.so
+vendor/lib64/libmtkcam_3rdparty.customer.so|2bcac544a86838d73125a0831188778e618175a7
 vendor/lib64/libmtkcam_3rdparty.mtk.so
 vendor/lib64/libmtkcam_3rdparty.so
 vendor/lib64/libmtkcam_device3_app.so
