@@ -370,7 +370,6 @@ vendor/lib64/libvia-ril.so
 vendor/lib64/libwpfa.so
 vendor/lib64/vendor.mediatek.hardware.mdmonitor@1.0.so
 vendor/lib64/vendor.mediatek.hardware.mtkradioex@2.0.so
-vendor/lib64/vendor.mediatek.hardware.mtkradioex@3.0.so
 
 # IMS
 vendor/bin/epdg_wod
